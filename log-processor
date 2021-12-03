@@ -1,0 +1,47 @@
+#!/usr/bin/python3
+
+import os, sys
+         
+# initial file reading and argument parsing ---------------------------
+# helper to check that the log file exists and return its contents
+def read_from_log_file():
+    LOG_FILE_NAME = "cookie_log.csv"
+    if os.path.exists(LOG_FILE_NAME):
+        with open(LOG_FILE_NAME, "r") as log_file:
+            return log_file.read()
+    else:
+        raise ValueError("The log file, named as", 
+                            LOG_FILE_NAME, 
+                            "must exist to proceed with the program.")
+
+# helper to parse the arguments given when the program is initially run
+# and helps the program to respond appropriately
+def cmd_input_parser(args):
+    USAGE = "usage: 3700ftp.py -d specified-date [-h]"
+    HELP_MESSAGE = USAGE + "\n\n" \
+                   "required arguments:\n" \
+                   "-d specified-date       " \
+                   "specifies the date at which the most active " \
+                   "cookie should be found from.\n\n" \
+                   "optional arguments:\n" \
+                   "**-h, --help**\n" \
+                   "show this help message and exit"
+    
+    if len(args) == 1 and (args[0] == "-h" or args[0] == "--help"):
+        print(HELP_MESSAGE)
+        sys.exit(0)
+    elif len(args) == 2 and args[0] == "-d":
+        return args[1]
+    else:
+        raise ValueError("invalid args being passed in\n" + USAGE)
+
+    
+# main ------------------------------------------------------------------        
+def main():
+    target_date = cmd_input_parser(sys.argv[1:])
+    log_cookie_processor = LogCookieProcessor(read_from_log_file(), target_date)
+    active_cookies = log_cookie_processor.find_most_active_cookies()
+    print(*active_cookies, sep="\n")
+    
+if __name__ == "__main__":
+    main()

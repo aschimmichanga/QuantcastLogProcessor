@@ -1,8 +1,9 @@
 from datetime import datetime
-import os
-                
+
+# processing cookie from log -----------------------------------------             
 class LogCookieProcessor:    
-    def update_cookie_dictionary(self, cookie_id, time):
+    # private helper to update cookie dictionary with a single cookie log entry
+    def __update_cookie_dictionary(self, cookie_id, time):
         try:
             date = datetime.fromisoformat(time).date()
             if date == self.target_date:
@@ -15,19 +16,15 @@ class LogCookieProcessor:
                              "should be in iso format YYYY-MM-DD[T-HH:MM+TZ]" /
                              " (TZ is time zone)")
 
-    def read_cookies_from_log_file(self):
-        LOG_FILE_NAME = "cookie_log.csv"
-        if os.exists(LOG_FILE_NAME):
-            with open(LOG_FILE_NAME, "r") as log_file:
-                for line in log_file.readlines():
-                    self.update_cookie_dictionary(*line.split(","))
-        else:
-            raise ValueError("The log file, named as", 
-                            LOG_FILE_NAME, 
-                            "must exist to proceed with the program.")
+    # private helper to update cookie dictionary with all cookie log entries
+    def __fill_cookie_dictionary(self, log):
+        for cookie in log.split("\n"):
+            if cookie:
+                cookie_id, time = cookie.split(",")
+                self.update_cookie_dictionary(cookie_id, time)
             
-    # most active cookie meaning the cookie that appears most often in the
-    # log at the specified target date
+    # returns the most active cookies 
+    # meaning the cookies that appears most often in the log at the specified target date
     def find_most_active_cookies(self):
         active_cookies = []
         max_occurrence = 0
@@ -39,19 +36,13 @@ class LogCookieProcessor:
                 active_cookies += [cookie_id]
         return active_cookies
     
-    def __init__(self, target_date):
+    def __init__(self, log, target_date):
+        # date validity already checked while cmd arg parsing
         try:
-            self.target_date = datetime.fromisoformat(target_date).date()
+            target_date = datetime.fromisoformat(target_date).date()
+            self.cookie_dict = {}
+            self.fill_cookie_dictionary(log)
         except Exception:
             raise ValueError("Target date's format is invalid," /
                              "should be in iso format YYYY-MM-DD[T-HH:MM+TZ]" /
                              " (TZ is time zone)")
-            
-        self.cookie_dict = {}
-        self.read_cookies_from_log_file()
-            
-            
-def main():
-    log_cookie_processor = LogCookieProcessor()
-    active_cookies = log_cookie_processor.find_most_active_cookies()
-    print(*active_cookies, sep="\n")
