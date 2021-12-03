@@ -15,7 +15,8 @@ show this help message and exit
 -----
 
 ## Functionality
-This program processes the log file and returns the most active cookie for specified day, given a cookie log file. The most active cookie as one seen in the log the most times during a given day. If multiple cookies meet that criteria, all of them are returned.
+This program processes the log file and returns the most active cookie for specified day, given a cookie log file. The most active cookie is the one seen in the log the most times during a given day. If multiple cookies meet that criteria, all of them are returned.  
+Note: The log file is always the file cookie_log.csv, so name the log file cookie_log.csv before running the program.
 
 Each cookie in the cookie log file is in the following format: cookie,timestamp
 
