@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os, sys
+import LogCookieProcessor
          
 # initial file reading and argument parsing ---------------------------
 # helper to check that the log file exists and return its contents

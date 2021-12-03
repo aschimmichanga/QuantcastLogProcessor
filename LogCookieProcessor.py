@@ -20,8 +20,10 @@ class LogCookieProcessor:
     def __fill_cookie_dictionary(self, log):
         for cookie in log.split("\n"):
             if cookie:
+                if not "," in cookie:
+                    raise ValueError("incorrectly formatted log")
                 cookie_id, time = cookie.split(",")
-                self.update_cookie_dictionary(cookie_id, time)
+                self.__update_cookie_dictionary(cookie_id, time)
             
     # returns the most active cookies 
     # meaning the cookies that appears most often in the log at the specified target date
@@ -38,11 +40,13 @@ class LogCookieProcessor:
     
     def __init__(self, log, target_date):
         # date validity already checked while cmd arg parsing
+        if log is None:
+            raise ValueError("invalid log given")
         try:
-            target_date = datetime.fromisoformat(target_date).date()
+            self.target_date = datetime.fromisoformat(target_date).date()
             self.cookie_dict = {}
-            self.fill_cookie_dictionary(log)
+            self.__fill_cookie_dictionary(log)
         except Exception:
-            raise ValueError("Target date's format is invalid," /
-                             "should be in iso format YYYY-MM-DD[T-HH:MM+TZ]" /
+            raise ValueError("Target date's format is invalid,",
+                             "should be in iso format YYYY-MM-DD[T-HH:MM+TZ]",
                              " (TZ is time zone)")
