@@ -11,9 +11,10 @@ def read_from_log_file():
         with open(LOG_FILE_NAME, "r") as log_file:
             return log_file.read()
     else:
-        raise ValueError("The log file, named as", 
+        print("The log file, named as", 
                             LOG_FILE_NAME, 
                             "must exist to proceed with the program.")
+        sys.exit(0)
 
 # helper to parse the arguments given when the program is initially run
 # and helps the program to respond appropriately
@@ -34,7 +35,8 @@ def cmd_input_parser(args):
     elif len(args) == 2 and args[0] == "-d":
         return args[1]
     else:
-        raise ValueError("invalid args being passed in\n" + USAGE)
+        print("invalid args being passed in\n" + USAGE)
+        sys.exit(0)
 
     
 # main ------------------------------------------------------------------        

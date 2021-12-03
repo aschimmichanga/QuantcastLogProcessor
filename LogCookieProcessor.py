@@ -6,7 +6,7 @@ class LogCookieProcessor:
     def __update_cookie_dictionary(self, cookie_id, time):
         try:
             date = datetime.fromisoformat(time).date()
-            if date == self.target_date:
+            if date == self.TARGET_DATE:
                 if cookie_id in self.cookie_dict:
                     self.cookie_dict[cookie_id] += 1
                 else:
@@ -27,6 +27,8 @@ class LogCookieProcessor:
             
     # returns the most active cookies 
     # meaning the cookies that appears most often in the log at the specified target date
+    # if empty log is provided, that is still valid but produces an empty list
+    # representing no cookies
     def find_most_active_cookies(self):
         active_cookies = []
         max_occurrence = 0
@@ -43,7 +45,7 @@ class LogCookieProcessor:
         if log is None:
             raise ValueError("invalid log given")
         try:
-            self.target_date = datetime.fromisoformat(target_date).date()
+            self.TARGET_DATE = datetime.fromisoformat(target_date).date()
             self.cookie_dict = {}
             self.__fill_cookie_dictionary(log)
         except Exception:
