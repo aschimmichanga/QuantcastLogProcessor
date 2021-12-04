@@ -19,14 +19,14 @@ def read_from_log_file():
 # helper to parse the arguments given when the program is initially run
 # and helps the program to respond appropriately
 def cmd_input_parser(args):
-    USAGE = "usage: 3700ftp.py -d specified-date [-h]"
+    USAGE = "usage: python3 log-processor -d specified-date [-h]"
     HELP_MESSAGE = USAGE + "\n\n" \
                    "required arguments:\n" \
                    "-d specified-date       " \
                    "specifies the date at which the most active " \
                    "cookie should be found from.\n\n" \
                    "optional arguments:\n" \
-                   "**-h, --help**\n" \
+                   "-h, --help\n" \
                    "show this help message and exit"
     
     if len(args) == 1 and (args[0] == "-h" or args[0] == "--help"):

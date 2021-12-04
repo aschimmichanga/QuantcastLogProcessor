@@ -1,6 +1,8 @@
 # Quantcast Log Processor - Most Active Cookie
 ## Usage
-usage: 3700ftp.py -d specified-date [-h]
+usage: 
+python3 log-processor -d specified-date [-h]
+
 
 required arguments:
 
